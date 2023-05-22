@@ -44,3 +44,32 @@ export const getUserById = async (req, res) => {
     res.status(404).json({ message: error });
   }
 };
+
+//delete a user by id
+export const deleteUserById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedUser = await user.findByIdAndDelete(id);
+    res.status(200).json(deletedUser);
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
+//update a user by id
+export const updateUserById = async (req, res) => {
+  const { name, email, password, phone } = req.body;
+
+  const id = req.params.id;
+
+  try {
+    const updatedUser = await user.findByIdAndUpdate(
+      id,
+      { name: name, email: email, passwordHash: password, phone: phone },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
